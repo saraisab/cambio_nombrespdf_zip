@@ -1,6 +1,6 @@
 import os
 import zipfile
-
+from datetime import datetime
 
 def rename_pdf_file(name_pdf):
     """
@@ -24,8 +24,13 @@ def rename_pdf_file(name_pdf):
         "12": "Diciembre"
     }
     list = name_pdf.split('_')
-    month_number = months[list[7][0:2]]
-    return f"NDOC_PRV_{list[4]}{list[6].lstrip('0')}_{month_number}{list[7][-2:]}.pdf"
+    # convierto la primera fecha que encuentro a datetime
+    date_dt = datetime.strptime(list[6], "%Y%m%d")
+    # el mes lo transformo a texto
+    month_number = months[date_dt.strftime("%m")]
+    # 28/02/2025 han modificado el formato
+    return f"NDOC_PRV_{list[3]}{list[5].lstrip('0')}_{month_number}{date_dt.strftime("%y")}.pdf"
+    # return f"NDOC_PRV_{list[4]}{list[6].lstrip('0')}_{month_number}{list[7][-2:]}.pdf"
 
 
 def delete_file_if_exists(path):
